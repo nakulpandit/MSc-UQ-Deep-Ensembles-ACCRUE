@@ -31,8 +31,13 @@ python -m venv .venv
 source .venv/bin/activate
 python -m pip install -e '.[dev]'
 pytest
+uq-reproduce-accrue --dataset g --runs 100
 uq-reproduce-toys --dataset g --method both --runs 1 --quick
 ```
+
+The dedicated `uq-reproduce-accrue` command is the paper-style ACCRUE toy
+reproduction. It saves per-run metrics, a summary, a Figure 4-style uncertainty
+recovery plot and a reliability diagram under `results/accrue_<dataset>/`.
 
 ## Reproducibility rules
 
@@ -48,6 +53,8 @@ uq-reproduce-toys --dataset g --method both --runs 1 --quick
 
 The detailed protocol and paper-to-code decisions are in
 [`docs/research_protocol.md`](docs/research_protocol.md).
+For a file-by-file explanation, see
+[`docs/repository_guide.md`](docs/repository_guide.md).
 
 ## References
 

@@ -106,3 +106,7 @@ three and exclusion criteria will be registered in a dated decision record befor
   `mean(member_variance + member_mean^2) - ensemble_mean^2`.
 - The analytic ACCRUE reliability score sorts standardized errors inside each training batch.
   Full-batch optimization is therefore the default for ACCRUE.
+- ACCRUE Algorithm 1 does not publish its polynomial stopping tolerance or positivity handling.
+  We use a score-difference tolerance of `0.01` and reject candidate polynomials that are
+  nonpositive on a 256-point grid spanning the known synthetic domain. This prevents invalid
+  Gaussian scales between sparse training points and is reported as an implementation decision.
