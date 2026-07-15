@@ -1,0 +1,28 @@
+seed: 2026
+
+deep_ensemble:
+  members: 5
+  hidden_layers: [50]
+  activation: relu
+  epochs: 40
+  batch_size: 32
+  learning_rate: 0.001
+  variance_floor: 1.0e-6
+
+accrue:
+  hidden_layers: [50, 10]
+  restarts: 5
+  optimizer: lbfgs
+  max_epochs: 500
+  patience: 10
+  residual_mode_reproduction: in_sample
+  residual_mode_comparison: cross_fit
+  cross_fit_folds: 5
+  sigma_floor: 1.0e-6
+
+synthetic:
+  g: {samples: 100, train_fraction: 0.33, validation_fraction: 0.33}
+  y: {samples: 100, train_fraction: 0.33, validation_fraction: 0.33}
+  w: {samples: 100, train_fraction: 0.33, validation_fraction: 0.33}
+  5d: {samples: 10000, train_fraction: 0.33, validation_fraction: 0.33}
+  independent_runs: 100

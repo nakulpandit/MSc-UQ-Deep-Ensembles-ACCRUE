@@ -1,0 +1,57 @@
+# MSc UQ: Deep Ensembles vs ACCRUE
+
+Clean, paper-led implementation for Nakul Pandit's MSc research project on
+uncertainty quantification in neural-network regression.
+
+The project compares two Gaussian predictive-uncertainty strategies:
+
+1. **Deep Ensembles** (Lakshminarayanan, Pritzel & Blundell, 2017): each independently
+   initialized network jointly predicts the conditional mean and variance by minimizing
+   Gaussian negative log-likelihood (NLL). Predictions are combined by moment matching.
+2. **ACCRUE** (Camporeale & Carè, 2021): a deterministic mean predictor is trained first;
+   a second model then estimates input-dependent standard deviation by balancing Gaussian
+   continuous ranked probability score (CRPS) and an analytic reliability score (RS).
+
+## Experimental stages
+
+| Stage | Purpose | Data | Primary outputs |
+|---|---|---|---|
+| 1 | Unit-check equations and pipeline | ACCRUE G, Y, W and 5D synthetic data | recovered noise, CRPS, RS, calibration |
+| 2 | Reproduce paper regression tables | Original UCI benchmark datasets | RMSE/NLL for Deep Ensembles; CRPS/calibration error for ACCRUE |
+| 3 | Fair head-to-head comparison | Shared original benchmarks | RMSE, NLL, CRPS, calibration error, coverage, sharpness, runtime |
+| 4 | Generalisation study | Three shared scientific datasets, frozen before running | the same metrics and paired repeated-run statistics |
+
+Stages are deliberately separate. Concrete, Energy Efficiency and Power Plant are present in
+both papers, so they are shared **paper benchmarks**, not novel datasets.
+
+## Quick start
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -e '.[dev]'
+pytest
+uq-reproduce-toys --dataset g --method both --runs 1 --quick
+```
+
+## Reproducibility rules
+
+- Fix and record the data split and model seed separately.
+- Fit preprocessing on the training partition only.
+- Give both methods identical train/validation/test rows in comparison experiments.
+- Use all training rows for every Deep Ensemble member; diversity comes from initialization
+  and minibatch order, matching the paper.
+- Use paper-style in-sample residuals only for ACCRUE reproduction. Use five-fold
+  out-of-fold residuals for the later fair comparison to prevent optimistic variance fitting.
+- Never select a model or calibration parameter on the test set.
+- Store per-run results before computing aggregate tables.
+
+The detailed protocol and paper-to-code decisions are in
+[`docs/research_protocol.md`](docs/research_protocol.md).
+
+## References
+
+- Lakshminarayanan, B., Pritzel, A. & Blundell, C. (2017). *Simple and Scalable
+  Predictive Uncertainty Estimation using Deep Ensembles*. NeurIPS 30.
+- Camporeale, E. & Carè, A. (2021). *ACCRUE: Accurate and Reliable Uncertainty
+  Estimate*. International Journal for Uncertainty Quantification, 11(4), 81–94.
