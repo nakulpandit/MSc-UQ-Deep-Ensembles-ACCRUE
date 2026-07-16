@@ -58,7 +58,7 @@ class TestResultValidation(unittest.TestCase):
                         "train_size": 33,
                         "validation_size": 33,
                         "test_size": 34,
-                        "mean_rmse": 0.8,
+                        "residual_rmse": 0.8,
                         "sigma_rmse": 0.2,
                         "nll": 1.2,
                         "crps": 0.4,

@@ -25,6 +25,7 @@ dev = ["pytest>=8.0", "ruff>=0.5"]
 uq-reproduce-toys = "uqcomparison.experiments.reproduce_toys:main"
 uq-reproduce-accrue = "uqcomparison.experiments.reproduce_accrue_toys:main"
 uq-reproduce-accrue-neural = "uqcomparison.experiments.reproduce_accrue_neural:main"
+uq-refresh-neural-results = "uqcomparison.experiments.refresh_neural_results:main"
 uq-validate-results = "uqcomparison.experiments.validate_results:main"
 
 [tool.setuptools.packages.find]
