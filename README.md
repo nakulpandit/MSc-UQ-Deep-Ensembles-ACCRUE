@@ -33,6 +33,9 @@ python -m pip install -e '.[dev]'
 pytest
 uq-reproduce-accrue --dataset g --runs 100
 uq-validate-results results/paper_reproductions/accrue_polynomial_g --dataset g --runs 100
+uq-reproduce-accrue-neural --dataset g --mode debug
+uq-validate-results results/development/accrue_neural_g_debug \
+  --kind neural --dataset g --mode debug --runs 1
 uq-reproduce-toys --dataset g --method both --runs 1 --quick
 ```
 
@@ -43,6 +46,10 @@ recovery plot and a reliability diagram under
 
 Follow [`docs/step_by_step_workflow.md`](docs/step_by_step_workflow.md) to run,
 inspect, commit and push the G, Y and W reproductions one at a time.
+
+The next paper phase uses the 50/10 neural ACCRUE model on G, Y, W and 5D.
+Use debug and development modes before the 100-run paper configuration; follow
+[`docs/neural_accrue_workflow.md`](docs/neural_accrue_workflow.md).
 
 ## Reproducibility rules
 

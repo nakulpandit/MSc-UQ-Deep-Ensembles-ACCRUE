@@ -9,7 +9,9 @@ try:
     from torch import nn
     from torch.nn import functional as F
 except ImportError as exc:  # pragma: no cover - depends on optional runtime installation
-    raise ImportError("Install the project dependencies to use neural models: pip install -e .") from exc
+    raise ImportError(
+        "Install the project dependencies to use neural models: pip install -e ."
+    ) from exc
 
 
 class GaussianRegressor(nn.Module):

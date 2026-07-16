@@ -54,7 +54,11 @@ def run_once(dataset: str, method: str, seed: int, quick: bool):
             ).fit(x[train], sample.y[train])
             oracle_mean = gp.predict(x)
         residual = sample.y - oracle_mean
-        config = AccrueConfig(restarts=1 if quick else 5, max_iterations=25 if quick else 500)
+        config = AccrueConfig(
+            restarts=1 if quick else 5,
+            max_epochs=3 if quick else 100,
+            lbfgs_iterations_per_epoch=2 if quick else 5,
+        )
         accrue = AccrueVarianceRegressor(x.shape[1], config=config, seed=seed).fit(
             x[train], residual[train], x[validation], residual[validation]
         )
@@ -86,7 +90,10 @@ def main():
     parser.add_argument("--seed", type=int, default=2026)
     parser.add_argument("--quick", action="store_true")
     args = parser.parse_args()
-    results = [run_once(args.dataset, args.method, args.seed + run, args.quick) for run in range(args.runs)]
+    results = [
+        run_once(args.dataset, args.method, args.seed + run, args.quick)
+        for run in range(args.runs)
+    ]
     print(json.dumps(results, indent=2, sort_keys=True))
 
 

@@ -86,8 +86,8 @@ fixed residuals from a separately trained mean model. It contains the 50/10
 variance network, CRPS, reliability score, combined loss and quasi-Newton-style
 LBFGS fitting with five restart support.
 
-The neural core exists, but G/Y/W/5D and real-data neural reproduction runs are
-still pending in a PyTorch environment.
+The neural core is used by the dedicated neural reproduction runner. It now
+implements validation patience, best-of-restart selection and training diagnostics.
 
 ### `src/uqcomparison/models/accrue_polynomial.py`
 
@@ -123,6 +123,14 @@ Run it with:
 uq-reproduce-accrue --dataset g --runs 100
 ```
 
+### `src/uqcomparison/experiments/reproduce_accrue_neural.py`
+
+Runs the neural ACCRUE paper phase on G, Y, W and 5D. It uses the paper's mean
+oracles and splits, the 50/10 variance network, LBFGS optimization, validation
+patience and independent restarts. It saves recovery/calibration plots plus
+runtime and optimizer-selection diagnostics. Debug and development modes are
+ignored by Git; final mode writes to `results/paper_reproductions/`.
+
 ## Tests
 
 | File | Checks |
@@ -130,6 +138,8 @@ uq-reproduce-accrue --dataset g --runs 100
 | `tests/test_synthetic.py` | Generator sizes, positive true sigma and deterministic seeding. |
 | `tests/test_metrics.py` | Known values and validity rules for common Gaussian metrics. |
 | `tests/test_accrue.py` | Finite ACCRUE score and positive polynomial uncertainty predictions. |
+| `tests/test_neural_runner.py` | Neural run-mode sizes and safe output locations. |
+| `tests/test_result_validation.py` | Polynomial and neural result-file validation. |
 
 ## Current research status
 
@@ -140,13 +150,13 @@ Completed:
 - shared regression-UQ metrics;
 - Deep Ensemble and neural ACCRUE cores;
 - ACCRUE polynomial Algorithm 1;
-- 100-run G polynomial reproduction with saved local outputs;
-- 11 passing tests.
+- merged 100-run G, Y and W polynomial reproductions;
+- neural ACCRUE runner for G, Y, W and 5D;
+- automated polynomial and neural result validation.
 
 Not yet completed:
 
-- neural ACCRUE reproduction on G/Y/W/5D;
-- Y, W and 5D final reproduction outputs;
+- final neural ACCRUE outputs on G/Y/W/5D;
 - Deep Ensemble original UCI benchmark table;
 - ACCRUE real-world benchmark table;
 - identical-split head-to-head comparison;
