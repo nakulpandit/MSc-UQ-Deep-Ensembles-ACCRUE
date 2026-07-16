@@ -32,12 +32,17 @@ source .venv/bin/activate
 python -m pip install -e '.[dev]'
 pytest
 uq-reproduce-accrue --dataset g --runs 100
+uq-validate-results results/paper_reproductions/accrue_polynomial_g --dataset g --runs 100
 uq-reproduce-toys --dataset g --method both --runs 1 --quick
 ```
 
 The dedicated `uq-reproduce-accrue` command is the paper-style ACCRUE toy
 reproduction. It saves per-run metrics, a summary, a Figure 4-style uncertainty
-recovery plot and a reliability diagram under `results/accrue_<dataset>/`.
+recovery plot and a reliability diagram under
+`results/paper_reproductions/accrue_polynomial_<dataset>/`.
+
+Follow [`docs/step_by_step_workflow.md`](docs/step_by_step_workflow.md) to run,
+inspect, commit and push the G, Y and W reproductions one at a time.
 
 ## Reproducibility rules
 

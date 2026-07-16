@@ -160,7 +160,9 @@ def main():
     parser.add_argument("--seed", type=int, default=2026)
     parser.add_argument("--output-dir", type=Path)
     args = parser.parse_args()
-    output_dir = args.output_dir or Path("results") / f"accrue_{args.dataset}"
+    output_dir = args.output_dir or (
+        Path("results") / "paper_reproductions" / f"accrue_polynomial_{args.dataset}"
+    )
     summary = run(args.dataset, args.runs, args.seed, output_dir)
     print(json.dumps(summary, indent=2))
 
