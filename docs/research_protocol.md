@@ -39,10 +39,11 @@ For the ACCRUE reproduction, the mean oracle follows the paper: a homoskedastic 
 for G/Y/W and the exact zero mean for 5D. A neural deterministic oracle will be an explicitly
 labelled ablation, not silently substituted.
 
-The Deep Ensembles paper's Figure 1 toy equation is not specified in the paper text. We will not
-invent an exact data-generating equation and call it a faithful reproduction. Instead, its qualitative
-toy demonstration will be reproduced on the fully specified G/Y/W generators and labelled as an
-adaptation.
+The Deep Ensembles paper specifies the Figure 1 target as `y = x^3 + Normal(0, 3^2)` with 20
+observations, but refers to Hernandez-Lobato and Adams for the input-sampling and architecture
+details. The established benchmark choices used here are `x ~ Uniform(-4, 4)` and one 100-unit
+ReLU hidden layer. Those inherited choices are recorded explicitly. The paper's primary 40-epoch
+configuration remains separate from the 2,000-epoch training diagnostic.
 
 ## Stage 2: original real-world benchmarks
 

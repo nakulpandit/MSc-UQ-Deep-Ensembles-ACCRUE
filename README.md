@@ -37,6 +37,9 @@ uq-reproduce-accrue-neural --dataset g --mode debug
 uq-validate-results results/development/accrue_neural_g_debug \
   --kind neural --dataset g --mode debug --runs 1
 uq-refresh-neural-results results/paper_reproductions/accrue_neural_5d
+uq-reproduce-deep-ensemble-figure1 --mode debug
+uq-validate-deep-ensemble results/development/deep_ensemble_figure1_debug \
+  --mode debug --runs 1
 uq-reproduce-toys --dataset g --method both --runs 1 --quick
 ```
 
@@ -51,6 +54,11 @@ inspect, commit and push the G, Y and W reproductions one at a time.
 The next paper phase uses the 50/10 neural ACCRUE model on G, Y, W and 5D.
 Use debug and development modes before the 100-run paper configuration; follow
 [`docs/neural_accrue_workflow.md`](docs/neural_accrue_workflow.md).
+
+The Deep Ensembles paper phase begins with the Section 3.2 cubic regression
+experiment. The debug, development, final and separately labelled long-training
+workflows are documented in
+[`docs/deep_ensemble_figure1_workflow.md`](docs/deep_ensemble_figure1_workflow.md).
 
 ## Reproducibility rules
 
