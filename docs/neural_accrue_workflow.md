@@ -1,0 +1,126 @@
+# Neural ACCRUE reproduction workflow
+
+This phase reproduces the neural variance model from Camporeale and Carè on the
+paper's G, Y, W and 5D synthetic datasets. It remains a method reproduction;
+Deep Ensembles are not compared in this phase.
+
+## What the neural method does
+
+1. Generate observations from the paper's known `f(x)` and `sigma(x)`.
+2. Split each independent sample into 33% train, 33% validation and 34% test.
+3. For G/Y/W, fit a homoskedastic Gaussian process as the fixed mean oracle.
+4. For 5D, use the exact zero mean, as in the paper.
+5. Train a separate 50/10 neural network to output `log(sigma)`.
+6. Minimize `beta * CRPS + (1-beta) * reliability_score` with LBFGS.
+7. Stop after ten validation epochs without improvement and retain the best of
+   the configured independent restarts.
+8. Evaluate only on untouched test observations.
+
+The runner records accuracy, uncertainty recovery, calibration, sharpness,
+training time, inference time, selected restart and training epochs.
+
+## Before running
+
+```bash
+git switch main
+git pull
+git switch -c feature/neural-accrue-reproduction
+
+source .venv/bin/activate
+python -m pip install -e '.[dev]'
+pytest
+```
+
+## Stage A: debug runs
+
+Debug mode checks code paths cheaply. It uses one restart and one run; the 5D
+sample is reduced to 500 observations. Debug outputs are ignored by Git.
+
+```bash
+for dataset in g y w 5d; do
+  uq-reproduce-accrue-neural --dataset "$dataset" --mode debug
+  uq-validate-results "results/development/accrue_neural_${dataset}_debug" \
+    --kind neural --dataset "$dataset" --mode debug --runs 1
+done
+```
+
+Why: failures here usually indicate installation, tensor-shape, numerical or
+file-output problems. Do not launch final runs until all four validate.
+
+## Stage B: development runs
+
+Development mode uses five runs and two restarts. It is large enough to inspect
+stability while remaining much cheaper than the paper configuration.
+
+```bash
+for dataset in g y w 5d; do
+  uq-reproduce-accrue-neural --dataset "$dataset" --mode development
+  uq-validate-results "results/development/accrue_neural_${dataset}_development" \
+    --kind neural --dataset "$dataset" --mode development --runs 5
+done
+```
+
+Inspect each `summary.json`, reliability plot and uncertainty-recovery plot.
+Development outputs are diagnostic and should not be committed.
+
+## Stage C: final paper runs
+
+Final mode uses the paper-scale settings: 100 independent runs, five network
+restarts, 100 observations for G/Y/W and 10,000 for 5D. The 5D experiment is
+computationally expensive; run datasets one at a time and keep the Mac connected
+to power.
+
+Use one Git branch per dataset. Begin with G:
+
+```bash
+git switch main
+git pull
+git switch -c results/accrue-neural-g
+
+uq-reproduce-accrue-neural --dataset g --mode final
+uq-validate-results results/paper_reproductions/accrue_neural_g \
+  --kind neural --dataset g --mode final --runs 100
+
+open results/paper_reproductions/accrue_neural_g/sigma_recovery.png
+open results/paper_reproductions/accrue_neural_g/reliability_diagram.png
+cat results/paper_reproductions/accrue_neural_g/summary.json
+
+git add results/paper_reproductions/accrue_neural_g
+git commit -m "Add 100-run neural ACCRUE G results"
+git push -u origin results/accrue-neural-g
+```
+
+Open and merge the pull request. Repeat the same process for Y and W, replacing
+`g` in the branch, command, path and commit message.
+
+For 5D:
+
+```bash
+git switch main
+git pull
+git switch -c results/accrue-neural-5d
+
+uq-reproduce-accrue-neural --dataset 5d --mode final
+uq-validate-results results/paper_reproductions/accrue_neural_5d \
+  --kind neural --dataset 5d --mode final --runs 100
+
+open results/paper_reproductions/accrue_neural_5d/sigma_scatter.png
+open results/paper_reproductions/accrue_neural_5d/reliability_diagram.png
+cat results/paper_reproductions/accrue_neural_5d/summary.json
+
+git add results/paper_reproductions/accrue_neural_5d
+git commit -m "Add 100-run neural ACCRUE 5D results"
+git push -u origin results/accrue-neural-5d
+```
+
+## Interpreting results
+
+- Lower sigma RMSE means better recovery of the hidden noise function.
+- Lower CRPS and NLL mean a better predictive distribution.
+- Lower calibration error means the standardized residual distribution is
+  closer to the expected Gaussian distribution.
+- Mean predicted sigma measures sharpness and is never interpreted alone.
+- Runtime and restart selection show the computational price of neural ACCRUE.
+
+Only after all four neural reproductions are validated should the project move
+to the original Deep Ensemble regression benchmarks.

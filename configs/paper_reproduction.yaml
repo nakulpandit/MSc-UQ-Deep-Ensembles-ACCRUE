@@ -13,7 +13,8 @@ accrue:
   hidden_layers: [50, 10]
   restarts: 5
   optimizer: lbfgs
-  max_epochs: 500
+  max_epochs: 100
+  lbfgs_iterations_per_epoch: 5
   patience: 10
   residual_mode_reproduction: in_sample
   residual_mode_comparison: cross_fit
@@ -26,3 +27,23 @@ synthetic:
   w: {samples: 100, train_fraction: 0.33, validation_fraction: 0.33}
   5d: {samples: 10000, train_fraction: 0.33, validation_fraction: 0.33}
   independent_runs: 100
+
+neural_run_modes:
+  debug:
+    runs: 1
+    restarts: 1
+    max_epochs: 3
+    one_dimensional_samples: 100
+    five_dimensional_samples: 500
+  development:
+    runs: 5
+    restarts: 2
+    max_epochs: 20
+    one_dimensional_samples: 100
+    five_dimensional_samples: 2000
+  final:
+    runs: 100
+    restarts: 5
+    max_epochs: 100
+    one_dimensional_samples: 100
+    five_dimensional_samples: 10000
