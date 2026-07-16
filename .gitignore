@@ -10,3 +10,4 @@ data/raw/
 data/processed/
 results/*
 !results/.gitkeep
+!results/paper_reproductions/

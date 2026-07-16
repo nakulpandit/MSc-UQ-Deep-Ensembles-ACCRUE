@@ -14,7 +14,7 @@ research project and distinguishes implemented work from planned experiments.
 | `docs/` | Research protocol, paper-to-code decisions and this repository guide. |
 | `src/uqcomparison/` | Reusable implementation of datasets, metrics, models and experiments. |
 | `tests/` | Small checks for equations, generators and model behaviour. |
-| `results/` | Local generated tables and plots. Its contents are ignored except `.gitkeep`. |
+| `results/` | Generated tables and plots. Final `paper_reproductions/` outputs are tracked; development runs are ignored. |
 
 ## Configuration
 
@@ -115,6 +115,7 @@ Completed first paper reproduction runner for ACCRUE G/Y/W polynomial tests:
 5. Evaluate only on test rows.
 6. Repeat independently (100 runs by default).
 7. Save per-run metrics, aggregate summary, recovery plot and reliability plot.
+8. Validate the four generated files with `uq-validate-results` before committing.
 
 Run it with:
 
