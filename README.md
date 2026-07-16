@@ -36,6 +36,7 @@ uq-validate-results results/paper_reproductions/accrue_polynomial_g --dataset g 
 uq-reproduce-accrue-neural --dataset g --mode debug
 uq-validate-results results/development/accrue_neural_g_debug \
   --kind neural --dataset g --mode debug --runs 1
+uq-refresh-neural-results results/paper_reproductions/accrue_neural_5d
 uq-reproduce-toys --dataset g --method both --runs 1 --quick
 ```
 
