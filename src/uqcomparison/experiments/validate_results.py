@@ -37,7 +37,7 @@ NEURAL_REQUIRED_COLUMNS = (
     "train_size",
     "validation_size",
     "test_size",
-    "mean_rmse",
+    "residual_rmse",
     "sigma_rmse",
     "nll",
     "crps",
@@ -131,6 +131,11 @@ def validate_neural_output_directory(
     ]
     if dataset == "5d":
         expected_files.extend(["sigma_scatter.png", "sigma_pairs_sample.csv"])
+        if (
+            "sigma_density.png" in summary.get("output_files", [])
+            or (path / "sigma_density.png").is_file()
+        ):
+            expected_files.append("sigma_density.png")
     else:
         expected_files.extend(["sigma_recovery.png", "sigma_curve.csv"])
     missing = [name for name in expected_files if not (path / name).is_file()]
@@ -138,6 +143,10 @@ def validate_neural_output_directory(
         raise ValueError(f"missing result files: {', '.join(missing)}")
 
     metrics = pd.read_csv(metrics_path)
+    # Accept result directories produced before the terminology correction.
+    # The refresh command upgrades the files permanently without retraining.
+    if "residual_rmse" not in metrics.columns and "mean_rmse" in metrics.columns:
+        metrics = metrics.rename(columns={"mean_rmse": "residual_rmse"})
     missing_columns = [name for name in NEURAL_REQUIRED_COLUMNS if name not in metrics.columns]
     if missing_columns:
         raise ValueError(f"missing metric columns: {', '.join(missing_columns)}")
@@ -158,8 +167,10 @@ def validate_neural_output_directory(
     ]
     if np.any(metrics[nonnegative] < 0):
         raise ValueError("nonnegative neural metrics contain a negative value")
-    recovery_image = "sigma_scatter.png" if dataset == "5d" else "sigma_recovery.png"
-    for image_name in ("reliability_diagram.png", recovery_image):
+    recovery_images = ["sigma_scatter.png"] if dataset == "5d" else ["sigma_recovery.png"]
+    if dataset == "5d" and "sigma_density.png" in expected_files:
+        recovery_images.append("sigma_density.png")
+    for image_name in ["reliability_diagram.png", *recovery_images]:
         if (path / image_name).stat().st_size < 1_000:
             raise ValueError(f"{image_name} is unexpectedly small")
 

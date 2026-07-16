@@ -48,7 +48,7 @@ def default_output_directory(dataset: str, mode: str) -> Path:
 
 def _metric_columns():
     return [
-        "mean_rmse",
+        "residual_rmse",
         "sigma_rmse",
         "nll",
         "crps",
@@ -150,6 +150,8 @@ def _plot_five_dimensional_recovery(
     )
     pairs.to_csv(output_dir / "sigma_pairs_sample.csv", index=False)
 
+    _plot_column_normalized_density(pairs, output_dir)
+
     fig, ax = plt.subplots(figsize=(6, 6))
     plot = ax.hexbin(
         pairs["true_sigma"], pairs["predicted_sigma"], gridsize=45,
@@ -171,6 +173,48 @@ def _plot_five_dimensional_recovery(
     fig.colorbar(plot, ax=ax, label="Test-point count")
     fig.tight_layout()
     fig.savefig(output_dir / "sigma_scatter.png", dpi=180)
+    plt.close(fig)
+
+
+def _plot_column_normalized_density(pairs: pd.DataFrame, output_dir: Path):
+    """Create the column-normalized 5D density visualization used in Fig. 7."""
+    true_sigma = pairs["true_sigma"].to_numpy(dtype=float)
+    predicted_sigma = pairs["predicted_sigma"].to_numpy(dtype=float)
+    density, true_edges, predicted_edges = np.histogram2d(
+        true_sigma, predicted_sigma, bins=(60, 60)
+    )
+    column_maxima = density.max(axis=1, keepdims=True)
+    normalized = np.divide(
+        density,
+        column_maxima,
+        out=np.zeros_like(density),
+        where=column_maxima > 0,
+    )
+
+    fig, ax = plt.subplots(figsize=(7, 6))
+    image = ax.pcolormesh(
+        true_edges,
+        predicted_edges,
+        normalized.T,
+        shading="auto",
+        cmap="viridis",
+        vmin=0.0,
+        vmax=1.0,
+    )
+    lower = min(true_edges[0], predicted_edges[0])
+    upper = max(true_edges[-1], predicted_edges[-1])
+    ax.plot([lower, upper], [lower, upper], "--", color="tab:red", label="Perfect recovery")
+    ax.set(
+        xlabel="True sigma",
+        ylabel="Predicted sigma",
+        title="Neural ACCRUE 5D column-normalized density",
+        xlim=(true_edges[0], true_edges[-1]),
+        ylim=(predicted_edges[0], predicted_edges[-1]),
+    )
+    ax.legend()
+    fig.colorbar(image, ax=ax, label="Column-normalized density")
+    fig.tight_layout()
+    fig.savefig(output_dir / "sigma_density.png", dpi=180)
     plt.close(fig)
 
 
@@ -246,7 +290,9 @@ def run(
                 "train_size": len(train),
                 "validation_size": len(validation),
                 "test_size": len(test),
-                "mean_rmse": rmse(sample.y[test], oracle_mean[test]),
+                # This is the RMSE of the oracle residuals, not error in the
+                # known mean function (which is exactly zero for 5D).
+                "residual_rmse": rmse(sample.y[test], oracle_mean[test]),
                 "sigma_rmse": rmse(sample.sigma[test], predicted_sigma),
                 "nll": gaussian_nll(sample.y[test], oracle_mean[test], predicted_sigma),
                 "crps": gaussian_crps(sample.y[test], oracle_mean[test], predicted_sigma),
@@ -269,7 +315,9 @@ def run(
         _plot_five_dimensional_recovery(
             np.asarray(pooled_true_sigma), np.asarray(pooled_predicted_sigma), output_dir, seed
         )
-        plot_files.extend(["sigma_scatter.png", "sigma_pairs_sample.csv"])
+        plot_files.extend(
+            ["sigma_density.png", "sigma_scatter.png", "sigma_pairs_sample.csv"]
+        )
     else:
         _plot_one_dimensional_recovery(
             grid, true_grid_sigma, np.asarray(grid_predictions), dataset, output_dir
