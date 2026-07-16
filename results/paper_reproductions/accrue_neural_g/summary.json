@@ -39,8 +39,8 @@
     "crps": 0.4795479876948936,
     "calibration_error": 0.1885143563287432,
     "mean_predicted_sigma": 0.7216074393889997,
-    "training_seconds": 0.1793510137486737,
-    "inference_ms_per_sample": 0.0011907958576236578,
+    "training_seconds": 0.18261378454015356,
+    "inference_ms_per_sample": 0.0013340312408913367,
     "best_validation_score": 0.25587130546075315,
     "best_restart": 1.97,
     "epochs_trained": 5.49
@@ -52,8 +52,8 @@
     "crps": 0.07595800720712638,
     "calibration_error": 0.06671303425604465,
     "mean_predicted_sigma": 0.11703580943998076,
-    "training_seconds": 0.09019719717613332,
-    "inference_ms_per_sample": 0.00016914044389588242,
+    "training_seconds": 0.09286895299151278,
+    "inference_ms_per_sample": 0.0001911119401487284,
     "best_validation_score": 0.030321784974895898,
     "best_restart": 1.374445342674637,
     "epochs_trained": 6.947654280402847
@@ -65,8 +65,8 @@
     "crps": 0.47284634176156704,
     "calibration_error": 0.17817377449207733,
     "mean_predicted_sigma": 0.7171660451028884,
-    "training_seconds": 0.14972339548694436,
-    "inference_ms_per_sample": 0.0012083379688727506,
+    "training_seconds": 0.1521512915060157,
+    "inference_ms_per_sample": 0.0013700880706036353,
     "best_validation_score": 0.25292996910886545,
     "best_restart": 2.0,
     "epochs_trained": 2.0
@@ -78,8 +78,8 @@
     "crps": 0.08529958575113106,
     "calibration_error": 0.09409956715476106,
     "mean_predicted_sigma": 0.14645907081571952,
-    "training_seconds": 0.059849865225260146,
-    "inference_ms_per_sample": 0.00029073571033008845,
+    "training_seconds": 0.062105239740049,
+    "inference_ms_per_sample": 0.00023894137805601672,
     "best_validation_score": 0.03718762760125305,
     "best_restart": 2.0,
     "epochs_trained": 5.25
