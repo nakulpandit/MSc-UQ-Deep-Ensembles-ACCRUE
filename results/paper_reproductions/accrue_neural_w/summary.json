@@ -1,0 +1,87 @@
+{
+  "method": "neural_accrue",
+  "dataset": "w",
+  "mode": "final",
+  "runs": 100,
+  "base_seed": 2026,
+  "sample_size": 100,
+  "split": {
+    "train": 0.33,
+    "validation": 0.33,
+    "test": 0.34
+  },
+  "mean_oracle": "homoskedastic_gp",
+  "architecture": {
+    "hidden_layers": [
+      50,
+      10
+    ],
+    "output": "log_sigma"
+  },
+  "optimizer": {
+    "name": "LBFGS",
+    "restarts": 5,
+    "max_epochs": 100,
+    "iterations_per_epoch": 5,
+    "validation_patience": 10
+  },
+  "output_files": [
+    "per_run_metrics.csv",
+    "summary.json",
+    "reliability_diagram.png",
+    "sigma_recovery.png",
+    "sigma_curve.csv"
+  ],
+  "metrics_mean": {
+    "residual_rmse": 0.5653200454534278,
+    "sigma_rmse": 0.2657470373352719,
+    "nll": 1.9237666922117718,
+    "crps": 0.28185361442773255,
+    "calibration_error": 0.20880788968913322,
+    "mean_predicted_sigma": 0.3423331537642159,
+    "training_seconds": 0.28655726255878106,
+    "inference_ms_per_sample": 0.0014617526732549507,
+    "best_validation_score": 0.19817021512079783,
+    "best_restart": 1.83,
+    "epochs_trained": 11.43
+  },
+  "metrics_std": {
+    "residual_rmse": 0.1522333532889175,
+    "sigma_rmse": 0.10357355466629377,
+    "nll": 3.4269550544257474,
+    "crps": 0.08696281878204472,
+    "calibration_error": 0.06996644311301238,
+    "mean_predicted_sigma": 0.11974058106500435,
+    "training_seconds": 0.15063211343582988,
+    "inference_ms_per_sample": 0.0003766797228912345,
+    "best_validation_score": 0.06139794300319561,
+    "best_restart": 1.4003928020380567,
+    "epochs_trained": 11.83152990952565
+  },
+  "metrics_median": {
+    "residual_rmse": 0.5496993560306274,
+    "sigma_rmse": 0.2547080542504302,
+    "nll": 0.678944517449166,
+    "crps": 0.2664980895367315,
+    "calibration_error": 0.19889418263858238,
+    "mean_predicted_sigma": 0.340474451558457,
+    "training_seconds": 0.2402092705015093,
+    "inference_ms_per_sample": 0.0014246175209443796,
+    "best_validation_score": 0.1819220487004837,
+    "best_restart": 2.0,
+    "epochs_trained": 7.0
+  },
+  "metrics_iqr": {
+    "residual_rmse": 0.2105869802672785,
+    "sigma_rmse": 0.17540352128843004,
+    "nll": 1.4635099471448367,
+    "crps": 0.12231551525476442,
+    "calibration_error": 0.09503549315949592,
+    "mean_predicted_sigma": 0.16252817960578098,
+    "training_seconds": 0.16243816675705602,
+    "inference_ms_per_sample": 0.00016480942790889574,
+    "best_validation_score": 0.06372398559115328,
+    "best_restart": 2.0,
+    "epochs_trained": 10.25
+  }
+}
