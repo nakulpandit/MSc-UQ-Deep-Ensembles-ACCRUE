@@ -1,0 +1,42 @@
+{
+  "dataset": "w",
+  "runs": 100,
+  "base_seed": 2026,
+  "protocol": "ACCRUE paper 33/33/34 split; GP mean oracle; Algorithm 1 polynomial sigma",
+  "metrics_mean": {
+    "polynomial_order": 2.02,
+    "mean_rmse": 0.5653200454534278,
+    "sigma_rmse": 0.3471834901061285,
+    "nll": 396298.3622811501,
+    "crps": 0.30041782680177315,
+    "calibration_error": 0.24804486801515335,
+    "mean_predicted_sigma": 0.28684382005583875
+  },
+  "metrics_std": {
+    "polynomial_order": 0.14070529413628965,
+    "mean_rmse": 0.15300027679907743,
+    "sigma_rmse": 0.08119376770299944,
+    "nll": 2433514.1256338707,
+    "crps": 0.09371559488009491,
+    "calibration_error": 0.12066474430909001,
+    "mean_predicted_sigma": 0.16343098815715368
+  },
+  "metrics_median": {
+    "polynomial_order": 2.0,
+    "mean_rmse": 0.5496993560306274,
+    "sigma_rmse": 0.32677650179118567,
+    "nll": 1.378003458750247,
+    "crps": 0.27884404328463097,
+    "calibration_error": 0.21866612447615813,
+    "mean_predicted_sigma": 0.2772447926957017
+  },
+  "metrics_iqr": {
+    "polynomial_order": 0.0,
+    "mean_rmse": 0.2105869802672785,
+    "sigma_rmse": 0.0862868166469265,
+    "nll": 2.749901636992636,
+    "crps": 0.10929285933101965,
+    "calibration_error": 0.10385646786051234,
+    "mean_predicted_sigma": 0.1737653768130532
+  }
+}
