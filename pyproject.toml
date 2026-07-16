@@ -23,6 +23,7 @@ dev = ["pytest>=8.0", "ruff>=0.5"]
 
 [project.scripts]
 uq-reproduce-toys = "uqcomparison.experiments.reproduce_toys:main"
+uq-reproduce-accrue = "uqcomparison.experiments.reproduce_accrue_toys:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

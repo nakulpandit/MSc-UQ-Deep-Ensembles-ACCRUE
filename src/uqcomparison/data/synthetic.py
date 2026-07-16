@@ -14,7 +14,11 @@ class SyntheticSample:
     sigma: NDArray[np.float64]
 
 
-def _functions(name: str, x: NDArray[np.float64]) -> tuple[NDArray, NDArray]:
+def synthetic_truth(name: str, x: NDArray[np.float64]) -> tuple[NDArray, NDArray]:
+    """Return the paper's true conditional mean and standard deviation."""
+    x = np.asarray(x, dtype=np.float64)
+    if x.ndim == 1:
+        x = x.reshape(-1, 1)
     key = name.lower()
     if key == "g":
         mean = 2.0 * np.sin(2.0 * np.pi * x[:, 0])
@@ -51,6 +55,6 @@ def generate_synthetic(
     rng = np.random.default_rng(seed)
     upper = np.pi if key == "w" else 1.0
     x = rng.uniform(0.0, upper, size=(n_samples, dimensions))
-    mean, sigma = _functions(key, x)
+    mean, sigma = synthetic_truth(key, x)
     y = rng.normal(mean, sigma)
     return SyntheticSample(x=x, y=y, mean=mean, sigma=sigma)
