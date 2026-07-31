@@ -1,0 +1,21 @@
+{
+  "dataset": "ACCRUE G",
+  "seed": 42,
+  "device": "mps",
+  "total_observations": 100,
+  "training_observations": 33,
+  "validation_observations": 33,
+  "test_observations": 34,
+  "candidate_models": 5,
+  "selected_model_seed": 42,
+  "selected_epoch": 68,
+  "beta": 0.5578855872154236,
+  "mean_rmse": 0.769486884433794,
+  "sigma_rmse": 0.08571845296902948,
+  "gaussian_nll": 1.1559360199901747,
+  "crps": 0.44003885984420776,
+  "reliability_score": 0.007956504821777344,
+  "calibration_mae": 0.04418295888266647,
+  "coverage_68": 0.6176470588235294,
+  "coverage_95": 0.8529411764705882
+}
